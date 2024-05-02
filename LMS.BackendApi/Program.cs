@@ -25,6 +25,8 @@ options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddScoped<IAuthor, AuthorRepo>();
 builder.Services.AddScoped<IBook, BookRepo>();
+builder.Services.AddScoped<IMember, MemberRepo>();
+builder.Services.AddScoped<IBorrowedBooks, BorrowedBookRepo>();
 
 
 
