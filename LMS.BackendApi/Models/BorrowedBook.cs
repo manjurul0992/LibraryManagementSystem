@@ -19,7 +19,7 @@ namespace LMS.BackendApi.Models
         public int BookId { get; set; }
         public string? Status { get; set; }
         [JsonIgnore]
-        public Member Member { get; set; }
+        public Member? Member { get; set; }
         [JsonIgnore]
         public Book? Book { get; set; }
     }

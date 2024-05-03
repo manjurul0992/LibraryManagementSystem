@@ -1,0 +1,64 @@
+﻿
+@model BookDetailVM[]
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-center">
+                    <h3 class="card-title">Store Proceduce Join Query Book List Result</h3>
+
+                 
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="booksTable" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Author</th>
+                                    <th>Published</th>
+                                    <th>ISBN</th>
+                                    <th>Available</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var book in Model)
+                                {
+                                    <tr>
+                                        <td>@book.title</td>
+                                        <td>@book.authorName</td>
+                                        <td>@book.publishedDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@book.isbn</td>
+                                        <td>@book.availableCopies</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary borrow-btn" data-id="@book.bookId" data-value="@book.availableCopies">Borrow</button>
+                                            <button type="button" class="btn btn-warning return-btn" data-id="@book.bookId">Return</button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />

@@ -1,6 +1,8 @@
 using LMS.BackendApi.Data;
 using LMS.BackendApi.Repository.Implementation;
 using LMS.BackendApi.Repository.Interfaces;
+using LMS.BackendApi.Services;
+using LMS.BackendApi.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +29,11 @@ builder.Services.AddScoped<IAuthor, AuthorRepo>();
 builder.Services.AddScoped<IBook, BookRepo>();
 builder.Services.AddScoped<IMember, MemberRepo>();
 builder.Services.AddScoped<IBorrowedBooks, BorrowedBookRepo>();
+
+
+
+builder.Services.AddScoped<IBorrowBookService, BorrowBookService>();
+
 
 
 

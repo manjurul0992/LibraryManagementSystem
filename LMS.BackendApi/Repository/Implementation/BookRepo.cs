@@ -4,13 +4,18 @@ using LMS.BackendApi.Models.ViewModels;
 using LMS.BackendApi.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using static System.Reflection.Metadata.BlobBuilder;
+
 
 namespace LMS.BackendApi.Repository.Implementation
 {
     public class BookRepo : IBook
     {
         private LmsDbContext _context;
+        public BookRepo(LmsDbContext _context)
+        {
+            this._context = _context ?? throw new ArgumentNullException(nameof(_context));
+        }
+        
         public Book GetBookById(int id)
         {
             try
@@ -32,7 +37,7 @@ namespace LMS.BackendApi.Repository.Implementation
                 command.CommandType = CommandType.Text;
                 _context.Database.OpenConnection();
 
-                using (var result = await command.ExecuteReaderAsync())
+                using (var result =  command.ExecuteReader())
                 {
                     var bookDetails = new List<BookDetailVM>();
                     while (await result.ReadAsync())

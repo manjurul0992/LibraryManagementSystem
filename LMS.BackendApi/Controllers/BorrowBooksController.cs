@@ -1,5 +1,6 @@
 ﻿using LMS.BackendApi.Models;
 using LMS.BackendApi.Repository.Interfaces;
+using LMS.BackendApi.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,10 @@ namespace LMS.BackendApi.Controllers
     [ApiController]
     public class BorrowBooksController : ControllerBase
     {
-        private readonly IBorrowedBooks borrowedBooks;
-        public BorrowBooksController(IBorrowedBooks borrowedBooks)
+        private readonly IBorrowBookService _borrowed;
+        public BorrowBooksController(IBorrowBookService borrowed)
         {
-            this.borrowedBooks = borrowedBooks;
+            this._borrowed = borrowed;
         }
 
 
@@ -20,14 +21,14 @@ namespace LMS.BackendApi.Controllers
         [Route("InsertBorrow")]
         public int Insert(BorrowedBook bb)
         {
-            return borrowedBooks.Insert(bb);
+            return _borrowed.Insert(bb);
         }
 
         [HttpPost]
         [Route("BorrowReturn")]
         public int Return(BorrowedBook bb)
         {
-            return borrowedBooks.Update(bb);
+            return _borrowed.Update(bb);
         }
     }
 }
