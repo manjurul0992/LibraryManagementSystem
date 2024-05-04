@@ -16,6 +16,14 @@ namespace LMS.WebFrontend.Controllers
             _httpClient.BaseAddress = new Uri("https://localhost:44382/");
 
         }
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _httpClient.Dispose();
+            }
+            base.Dispose(disposing);
+        }
         public async Task<IActionResult> Index()
         {
             var response = await _httpClient.GetAsync("Members/GetMembers");
@@ -57,18 +65,18 @@ namespace LMS.WebFrontend.Controllers
             }
             return View(memberVM);
         }
-        [HttpGet]
-        [Route("Edit/{id}")]
 
+
+
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            id = 1;
             if (id == null)
             {
                 return NotFound();
             }
 
-            var response = await _httpClient.GetAsync($"Members/EditMember/{id}");
+            HttpResponseMessage response = await _httpClient.GetAsync($"Members/GetMemberById/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -86,42 +94,36 @@ namespace LMS.WebFrontend.Controllers
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MemberId,FirstName,LastName,Email,PhoneNumber,Password,RegistrationDate")] MemberVM memberVM)
+        public async Task<IActionResult> Edit(MemberVM member)
         {
-            if (id != memberVM.MemberId)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
+                // Send HTTP PUT request to update member data
+                HttpResponseMessage response = await _httpClient.PutAsJsonAsync($"Members/EditMember/{member.MemberId}", member);
+                if (response.IsSuccessStatusCode)
                 {
-                    var json = JsonConvert.SerializeObject(memberVM);
-                    var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-                    var response = await _httpClient.PostAsync($"Members/EditMember/{id}", content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
-                    else
-                    {
-                        return View("Error");
-                    }
+                    // Handle success
+                    return RedirectToAction("Index"); // Redirect to list page after successful edit
                 }
-                catch (HttpRequestException)
+                else
                 {
+                    // Handle error
                     return View("Error");
                 }
             }
-            return View(memberVM);
+            // If model state is not valid, redisplay the form with validation errors
+            return View(member);
         }
+
+
+
+
+
         public async Task<IActionResult> Delete(int? id)
         {
-            id = 1;
+
             if (id == null)
             {
                 return NotFound();

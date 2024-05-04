@@ -72,6 +72,36 @@ namespace LMS.BackendApi.Repository.Implementation
             }
         }
 
+        public async Task<List<BorrowedBookVM>> GetBooksMemberCount()
+        {
+            using (var command = _context.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "CALL GetMemberBorrowedBooks;";
+                command.CommandType = CommandType.Text;
+                _context.Database.OpenConnection();
+
+                using (var result = await command.ExecuteReaderAsync())
+                {
+                    var memberChor = new List<BorrowedBookVM>();
+                    while (await result.ReadAsync())
+                    {
+                        memberChor.Add(new BorrowedBookVM
+                        {
+                            MemberId = result.GetInt32("MemberId"),
+                            FirstName = result.GetString("FirstName"),
+                            LastName = result.GetString("LastName"),
+                            TotalBooksBorrowed = result.GetInt32("TotalBooksBorrowed"),
+                            BooksBorrowed = result.GetInt32("BooksBorrowed"),
+                            BooksReturned = result.GetInt32("BooksReturned"),
+
+                        });
+                    }
+
+                    return memberChor;
+                }
+            }
+        }
+
         public int InsertBook(Book book)
         {
             try
@@ -99,5 +129,7 @@ namespace LMS.BackendApi.Repository.Implementation
                 return 1;
             }
         }
+
+
     }
 }

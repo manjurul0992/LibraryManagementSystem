@@ -4,7 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-
 <div class="container">
     <div class="row">
         <div class="col-12">
@@ -40,6 +39,7 @@
                                         <td>
                                             <button type="button" class="btn btn-primary borrow-btn" data-id="@book.bookId" data-value="@book.availableCopies">Borrow</button>
                                             <button type="button" class="btn btn-warning return-btn" data-id="@book.bookId">Return</button>
+                                            <a class="btn btn-danger" asp-action="DueHistory" asp-controller="Books">OverDue</a>
                                         </td>
                                     </tr>
                                 }
@@ -51,6 +51,8 @@
         </div>
     </div>
 </div>
+
+
 
 @section Scripts {
     @{

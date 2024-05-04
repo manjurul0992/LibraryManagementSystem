@@ -17,7 +17,22 @@ namespace LMS.BackendApi.Repository.Implementation
         {
             try
             {
-                List<Member> members = _context.Members.ToList();
+                List<Member> members = _context.Members
+                            .Select(m => new Member
+                             {
+                                 MemberId = m.MemberId,
+                                 FirstName = m.FirstName,
+                                 LastName = m.LastName,
+                                 Email = m.Email,
+                                 PhoneNumber = m.PhoneNumber,
+                                 Password = m.Password,
+                                 RegistrationDate = m.RegistrationDate
+                             })
+                             .ToList();     
+
+
+
+
                 return members;
             }
             catch (Exception)

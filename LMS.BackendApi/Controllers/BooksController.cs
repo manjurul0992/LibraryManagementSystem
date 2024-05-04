@@ -29,5 +29,12 @@ namespace LMS.BackendApi.Controllers
         {
             return _book.InsertBook(book);
         }
+
+        [HttpGet]
+        [Route("GetMemberBooks")]
+        public Task<List<BorrowedBookVM>> GetmenberBook()
+        {
+            return _book.GetBooksMemberCount();
+        }
     }
 }

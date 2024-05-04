@@ -1,12 +1,15 @@
 ﻿using LMS.WebFrontend.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 
 namespace LMS.WebFrontend.Controllers
 {
+    
     public class BooksController : Controller
     {
+        
         private readonly IHttpClientFactory _httpClientFactory;
         public BooksController(IHttpClientFactory httpClientFactory)
         {
@@ -14,6 +17,7 @@ namespace LMS.WebFrontend.Controllers
             _httpClientFactory = httpClientFactory;
 
         }
+       
         public async Task<IActionResult> Index()
         {
             try
@@ -118,6 +122,39 @@ namespace LMS.WebFrontend.Controllers
             }
 
             return Json(new { res = 1 });
+        }
+
+        public async Task<IActionResult> DueHistoryAsync()
+        {
+            try
+            {
+                var books = await HistoryAsync();
+                return View(books.ToArray());
+            }
+            catch (Exception ex)
+            {
+                return View("Error");
+            }
+        }
+
+
+
+
+        public async Task<List<BorrowedBookVM>> HistoryAsync()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var apiUrl = "https://localhost:44382/Books/GetMemberBooks";
+
+            var response = await client.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<BorrowedBookVM>>(jsonString);
+            }
+            else
+            {
+                throw new InvalidOperationException("Could not retrieve books: " + response.StatusCode);
+            }
         }
     }
 }

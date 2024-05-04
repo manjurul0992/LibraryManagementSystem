@@ -4,14 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+
+<div class="d-flex justify-content-end">
+    <a asp-action="Create" class="btn btn-success">Add</a>
+</div>
+<table class="table table-bordered table-striped">
     <thead>
-        <tr>
+        <tr
+            <th></th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -30,7 +31,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.RegistrationDate)
             </th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -38,6 +39,7 @@
         {
             @Html.HiddenFor(modelItem => item.MemberId)
             <tr>
+               
                 <td>
                     @Html.DisplayFor(modelItem => item.FirstName)
                 </td>
@@ -57,9 +59,8 @@
                     @Html.DisplayFor(modelItem => item.RegistrationDate)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.MemberId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.MemberId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.MemberId">Delete</a>
+                    <a class="btn btn-outline-secondary" asp-action="Edit" asp-controller="Members" asp-route-id="@item.MemberId">Edit</a> 
+                     <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.MemberId">Delete</a>
                 </td>
             </tr>
         }

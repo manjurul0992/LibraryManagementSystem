@@ -1,0 +1,76 @@
+﻿@model IEnumerable<LMS.WebFrontend.Models.ViewModels.BorrowedBookVM>
+
+@{
+    ViewData["Title"] = "DueHistoryAsync";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="row">
+    <div class="">
+        <table class="table table-bordered table-striped table-hover" id="ckOverDue">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.memberId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.firstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.lastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.totalBooksBorrowed)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.booksReturned)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.booksBorrowed)
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.memberId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.firstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.lastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.totalBooksBorrowed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.booksReturned)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.booksBorrowed)
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-primary ckOver-btn" data-id="@item.memberId" data-value="@item.booksBorrowed">Check</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    $('#ckOverDue').on('click', '.ckOver-btn', function () {
+        var booksBorrowed = $(this).data('value');
+
+        if (booksBorrowed >= 3) {
+            alert('Member has overdue books!');
+        } else {
+            alert('Member does not have overdue books.');
+        }
+    });
+</script>

@@ -8,7 +8,6 @@ namespace LMS.BackendApi.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonIgnore]
         public int MemberId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

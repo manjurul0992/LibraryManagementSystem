@@ -10,5 +10,6 @@ namespace LMS.BackendApi.Repository.Interfaces
         int InsertBook(Book book);
         int UpdateBook(Book book);
         Task<List<BookDetailVM>> GetBookDetails();
+        Task<List<BorrowedBookVM>> GetBooksMemberCount();
     }
 }

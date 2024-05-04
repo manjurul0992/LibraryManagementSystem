@@ -48,13 +48,18 @@ namespace LMS.BackendApi.Controllers
 
             return memberVM;
         }
-        [HttpPut]
-        [Route("EditMember/{id}")]
+
+        [HttpPut("EditMember/{id}")]
         public async Task<IActionResult> EditMember(int id, Member member)
         {
             if (id != member.MemberId)
             {
                 return BadRequest();
+            }
+
+            if (!MemberVMExists(id))
+            {
+                return NotFound();
             }
 
             _context.Entry(member).State = EntityState.Modified;
@@ -77,6 +82,8 @@ namespace LMS.BackendApi.Controllers
 
             return NoContent();
         }
+
+
         private bool MemberVMExists(int id)
         {
             return _context.Members.Any(e => e.MemberId == id);
@@ -102,6 +109,10 @@ namespace LMS.BackendApi.Controllers
         {
             return member.LoginCheck(loginModel);
         }
+
+
+
+         
 
     }
 }
